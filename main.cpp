@@ -42,6 +42,33 @@ std::vector<double> window_average_calculator(std::vector<double>& prices, int w
     return window_averages;
 }
 
+/**
+ * @brief Simulates a run of the backtesting engine
+ * @param prices A vector of listed prices of stock for all days
+ * @param window_averages A vector of daily average trends based on the window_size
+ * @param[in,out] cash Simulated bank account of the user
+ * @param[in,out] shares Number of simulated shares owned by the user
+ * @param window_size The number of days a trend average is calculated for, used to align prices day and window_average day
+ * @note shares set to double supports fractional share ownership, int shares does not (which is not applied here)
+ */
+void run_simulator(std::vector<double>& prices, std::vector<double>& window_averages,
+                    double& cash, double& shares , int window_size){
+
+    for (int day = 0; day < window_averages.size(); day++){
+        int day_offset = day + (window_size - 1);
+
+        if (shares == 0 && prices[day_offset] > window_averages[day]){
+            shares = cash / prices[day_offset];
+            cash = cash - (shares * prices[day_offset]);    
+        }
+
+        if(shares != 0 && prices[day_offset] < window_averages[day]){
+            cash = cash + (shares * prices[day_offset]);
+            shares = 0;
+        }
+    }
+}
+
 int main(){
 
     std::vector<double> prices;
