@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Patrick Sidharta
- * @brief Beginning stage of backtesting engine. Currently handles mock initialization and average computation
+ * @brief Beginning stage of backtesting engine. Currently handles mock initialization, mock values, and run simulation
  */
 
 #include <iostream>
@@ -58,13 +58,23 @@ void run_simulator(std::vector<double>& prices, std::vector<double>& window_aver
         int day_offset = day + (window_size - 1);
 
         if (shares == 0 && prices[day_offset] > window_averages[day]){
+            std::cout << "BUY+" << std::endl;
+            std::cout << "Stock Price: " << prices[day_offset] << std::endl;
+            std::cout << "Moving Average: " << window_averages[day] << std::endl;
             shares = cash / prices[day_offset];
-            cash = cash - (shares * prices[day_offset]);    
+            cash = cash - (shares * prices[day_offset]);
+            std::cout << "Shares bought: " << shares << std::endl;
+            std::cout << "Current Cash: " << cash << std::endl;
         }
 
         if(shares != 0 && prices[day_offset] < window_averages[day]){
+            std::cout << "SELL-" << std::endl;
+            std::cout << "Stock Price: " << prices[day_offset] << std::endl;
+            std::cout << "Moving Average: " << window_averages[day] << std::endl;
+            std::cout << "Shares Sold: " << shares << std::endl;
             cash = cash + (shares * prices[day_offset]);
             shares = 0;
+            std::cout << "Current Cash: " << cash << std::endl;
         }
     }
 }
@@ -76,6 +86,19 @@ int main(){
     for (int i = 0; i < 5; i++){
         prices.push_back(100 + (i * 5));
     }
+
+    double cash = 10000.00;
+    double shares = 0.0;
+    int window_size = 3;
+
+    std::cout << "START CASH: " << cash << std::endl;
+
+    std::vector<double> window_averages = window_average_calculator(prices, window_size);
+
+    run_simulator(prices, window_averages, cash, shares, window_size);
+
+    cash = cash + (shares * prices.back());
+    std::cout << "END CASH: " << cash << std::endl;
 
     return 0;
 }
