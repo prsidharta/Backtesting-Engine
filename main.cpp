@@ -8,24 +8,38 @@
 #include <vector>
 #include <stdexcept>
 
+
 /**
- * @brief Calculates the average of a given vector
- * @param prices A vector of type double for which the average of all values inside will be calculated
- * @return The average of the values in prices
- * @throws std::invalid_argument if vector given is empty
+ * @brief Calculates a window_size day average trend for each day
+ * @param prices, A vector of listed prices of stock for all days 
+ * @param window_size, The number of days a trend average is calculated for
+ * @throw std::invalid_argument if prices vector is empty
+ * @throw std::invalid_argument if window_size is greater than total number of prices
+ * @return std::vector<double> containing the calculated window averages
  */
-double calculate_average(std::vector<double>& prices){
-    double sum = 0.0;
+std::vector<double> window_average_calculator(std::vector<double>& prices, int window_size){
 
     if (prices.size() == 0){
         throw std::invalid_argument("Empty Vector");
     }
 
-    for (int i = 0; i < prices.size(); i++){
-        sum += prices[i];
+    if (window_size > prices.size()){
+        throw std::invalid_argument("Requested Window Period is Greater than Vector Provided");
     }
 
-    return sum / prices.size();
+    std::vector<double> window_averages;
+
+    for (int i = 0; i < prices.size() - (window_size - 1); i++){
+        double temp = 0;
+        for (int j = 0; j < window_size; j++){
+            temp += prices[i + j];
+        }
+
+        temp = temp / window_size;
+        window_averages.push_back(temp);
+    }
+
+    return window_averages;
 }
 
 int main(){
@@ -36,8 +50,5 @@ int main(){
         prices.push_back(100 + (i * 5));
     }
 
-    double result = calculate_average(prices);
-
-    std::cout << result << std::endl;
     return 0;
 }
