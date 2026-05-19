@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <fstream>
+#include <sstream>
 
 
 /**
@@ -40,6 +42,21 @@ std::vector<double> window_average_calculator(std::vector<double>& prices, int w
     }
 
     return window_averages;
+}
+
+std::vector<double> input_prices(std::string filename){
+
+    std::ifstream pFile(filename);
+    if (!pFile.is_open()){
+        throw std::runtime_error("Failure to open file.");
+    }
+
+    std::string line;
+    while(std::getline(pFile, line)){
+        std::cout << line << std::endl;
+    }
+
+    pFile.close();
 }
 
 /**
@@ -86,6 +103,10 @@ int main(){
     for (int i = 0; i < 5; i++){
         prices.push_back(100 + (i * 5));
     }
+    prices.push_back(80);
+    prices.push_back(25);
+    prices.push_back(10);
+    prices.push_back(100);
 
     double cash = 10000.00;
     double shares = 0.0;
