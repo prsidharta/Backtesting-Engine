@@ -5,17 +5,28 @@
 #include <sstream>
 #include <stdexcept>
 
-std::vector<double> InputPrices(std::string filename) {
+std::vector<double> ReadCsv(std::string filename) {
 
-    std::ifstream pFile(filename);
-    if (!pFile.is_open()) {
+    std::ifstream csvFile(filename);
+    std::string line, textChunk;
+    std::vector<double> stockPrices;
+    if (!csvFile.is_open()) {
         throw std::runtime_error("Failure to open file.");
     }
 
-    std::string line;
-    while (std::getline(pFile, line)) {
-        std::cout << line << std::endl;
-    }
+    std::getline(csvFile, textChunk);
+    while (std::getline(csvFile, line)) {
+        int i = 0;
+        std::stringstream lineStream(line);
 
-    pFile.close();
+        while (std::getline(lineStream, textChunk, ',')) {
+            if (i == 4) {
+                stockPrices.push_back(std::stod(textChunk));
+                break;
+            }
+            i++;
+        }
+    }
+    csvFile.close();
+    return stockPrices;
 }
