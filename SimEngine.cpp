@@ -33,25 +33,26 @@ void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverag
 
     for (int day = 0; day < windowAverages.size(); day++) {
         int dayOffset = day + (windowSize - 1);
+        double dayPrice = prices[dayOffset];
+        double windowPrice = windowAverages[day];
 
-        if (shares == 0 && prices[dayOffset] > windowAverages[day]) {
-            std::cout << "BUY+" << std::endl;
-            std::cout << "Stock Price: " << prices[dayOffset] << std::endl;
-            std::cout << "Moving Average: " << windowAverages[day] << std::endl;
-            shares = cash / prices[dayOffset];
-            cash = cash - (shares * prices[dayOffset]);
-            std::cout << "Shares bought: " << shares << std::endl;
-            std::cout << "Current Cash: " << cash << std::endl;
-        }
-
-        if (shares != 0 && prices[dayOffset] < windowAverages[day]) {
-            std::cout << "SELL-" << std::endl;
-            std::cout << "Stock Price: " << prices[dayOffset] << std::endl;
-            std::cout << "Moving Average: " << windowAverages[day] << std::endl;
-            std::cout << "Shares Sold: " << shares << std::endl;
-            cash = cash + (shares * prices[dayOffset]);
+        if (shares == 0 && dayPrice > windowPrice) {
+            shares = cash / dayPrice;
+            cash -= (shares * dayPrice);
+            std::cout << "BUY+" << "\n"
+                      << "Stock Price: " << dayPrice << "\n"
+                      << "Moving Average: " << windowPrice << "\n"
+                      << "Shares bought: " << shares << "\n"
+                      << "Current Cash: " << cash << std::endl;
+        } else if (shares != 0 && dayPrice < windowPrice) {
+            cash += (shares * dayPrice);
+            double sharesSold = shares;
             shares = 0;
-            std::cout << "Current Cash: " << cash << std::endl;
+            std::cout << "SELL-" << "\n"
+                      << "Stock Price: " << dayPrice << "\n"
+                      << "Moving Average: " << windowPrice << "\n"
+                      << "Shares Sold: " << sharesSold << "\n"
+                      << "Current Cash: " << cash << std::endl;
         }
     }
 }
