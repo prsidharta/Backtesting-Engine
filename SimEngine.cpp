@@ -30,6 +30,7 @@ std::vector<double> CalculateWindowAverages(std::vector<double> &prices, int win
 
 void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, double &cash, double &shares,
                   int windowSize) {
+    double benchmarkShares = cash / prices[0]; 
 
     for (int day = 0; day < windowAverages.size(); day++) {
         int dayOffset = day + (windowSize - 1);
@@ -55,4 +56,5 @@ void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverag
                       << "Current Cash: " << cash << std::endl;
         }
     }
+    std::cout << "Buy and Hold End Cash: " << benchmarkShares * prices.back() << std::endl;
 }
