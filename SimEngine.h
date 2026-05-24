@@ -1,6 +1,20 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
+struct TradingRecord{
+
+    std::string type;
+    double price;
+    double shares;
+
+    TradingRecord(std::string givenType, double givenPrice, double givenShares){
+        type = givenType;
+        price = givenPrice;
+        shares = givenShares;
+    }
+};
 
 /**
  * @brief Simulates a run of the backtesting engine
