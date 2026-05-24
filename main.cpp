@@ -6,11 +6,13 @@
 
 #include "SimEngine.h"
 #include "StockParser.h"
+#include <chrono>
 #include <iostream>
 #include <vector>
 
 int main() {
 
+    auto start = std::chrono::high_resolution_clock::now();
     double cash = 10000.00;
     double shares = 0.0;
     int windowSize = 3;
@@ -22,7 +24,10 @@ int main() {
     RunSimulator(prices, windowAverages, cash, shares, windowSize);
 
     cash = cash + (shares * prices.back());
-    std::cout << "END CASH: " << cash << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "END CASH: " << cash << "\n"
+              << "Program Time: " << duration.count() << "ms" << std::endl;
 
     return 0;
 }
