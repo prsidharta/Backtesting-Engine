@@ -1,7 +1,19 @@
 #include "SimEngine.h"
-
 #include <iostream>
 #include <stdexcept>
+
+SimEngine::SimEngine(double startingCash){
+    m_cash = startingCash;
+    m_shares = 0;
+}
+
+double SimEngine::GetCash(){
+    return m_cash;
+}
+
+double SimEngine::GetShares(){
+    return m_shares;
+}
 
 std::vector<double> CalculateWindowAverages(std::vector<double> &prices, int windowSize) {
 
@@ -28,10 +40,9 @@ std::vector<double> CalculateWindowAverages(std::vector<double> &prices, int win
     return windowAverages;
 }
 
-void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, double &cash, double &shares,
-                  int windowSize) {
+void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize){
 
-    double benchmarkShares = cash / prices[0];
+    double benchmarkShares = m_cash / prices[0];
     std::vector<TradingRecord> ledger;
 
     for (size_t day = 0; day < windowAverages.size(); day++) {
@@ -39,25 +50,25 @@ void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverag
         double dayPrice = prices[dayOffset];
         double windowPrice = windowAverages[day];
 
-        if (shares == 0 && dayPrice > windowPrice) {
-            shares = cash / dayPrice;
-            cash -= (shares * dayPrice);
-            ledger.emplace_back("BUY", dayPrice, shares);
+        if (m_shares == 0 && dayPrice > windowPrice) {
+            m_shares = m_cash / dayPrice;
+            m_cash -= (m_shares * dayPrice);
+            ledger.emplace_back("BUY", dayPrice, m_shares);
             std::cout << "BUY+" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
                       << "Moving Average: " << windowPrice << "\n"
-                      << "Shares bought: " << shares << "\n"
-                      << "Current Cash: " << cash << "\n";
-        } else if (shares != 0 && dayPrice < windowPrice) {
-            cash += (shares * dayPrice);
-            double sharesSold = shares;
-            shares = 0;
+                      << "Shares bought: " << m_shares << "\n"
+                      << "Current Cash: " << m_cash << "\n";
+        } else if (m_shares != 0 && dayPrice < windowPrice) {
+            m_cash += (m_shares * dayPrice);
+            double sharesSold = m_shares;
+            m_shares = 0;
             ledger.emplace_back("SELL", dayPrice, sharesSold);
             std::cout << "SELL-" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
                       << "Moving Average: " << windowPrice << "\n"
                       << "Shares Sold: " << sharesSold << "\n"
-                      << "Current Cash: " << cash << "\n";
+                      << "Current Cash: " << m_cash << "\n";
         }
     }
     std::cout << "Buy and Hold End Cash: " << benchmarkShares * prices.back() << "\n";

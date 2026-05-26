@@ -16,6 +16,19 @@ struct TradingRecord{
     }
 };
 
+class SimEngine{
+    private: 
+        double m_cash;
+        double m_shares;
+        double m_ledger;
+    
+    public:
+        SimEngine(double startingCash);
+        void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize);
+        double GetCash();
+        double GetShares();
+};
+
 /**
  * @brief Simulates a run of the backtesting engine
  * @param prices A vector of listed prices of stock for all days
@@ -26,8 +39,6 @@ struct TradingRecord{
  * day
  * @note shares set to double supports fractional share ownership, int shares does not (which is not applied here)
  */
-void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, double &cash, double &shares,
-                  int windowSize);
 
 /**
  * @brief Calculates a window_size day average trend for each day
