@@ -2,16 +2,17 @@
 #include <iostream>
 #include <stdexcept>
 
-SimEngine::SimEngine(double startingCash){
+SimEngine::SimEngine(double startingCash, TradingStrategy *strategy) {
     m_cash = startingCash;
     m_shares = 0;
+    m_strategy = strategy;
 }
 
-double SimEngine::GetCash(){
+double SimEngine::GetCash() {
     return m_cash;
 }
 
-double SimEngine::GetShares(){
+double SimEngine::GetShares() {
     return m_shares;
 }
 
@@ -40,7 +41,7 @@ std::vector<double> CalculateWindowAverages(std::vector<double> &prices, int win
     return windowAverages;
 }
 
-void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize){
+void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize) {
 
     double benchmarkShares = m_cash / prices[0];
     std::vector<TradingRecord> ledger;
@@ -50,7 +51,9 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
         double dayPrice = prices[dayOffset];
         double windowPrice = windowAverages[day];
 
-        if (m_shares == 0 && dayPrice > windowPrice) {
+        int signal = m_strategy->CreateSignal(dayPrice, windowPrice, m_shares);
+
+        if (signal == 1) {
             m_shares = m_cash / dayPrice;
             m_cash -= (m_shares * dayPrice);
             ledger.emplace_back("BUY", dayPrice, m_shares);
@@ -59,7 +62,7 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
                       << "Moving Average: " << windowPrice << "\n"
                       << "Shares bought: " << m_shares << "\n"
                       << "Current Cash: " << m_cash << "\n";
-        } else if (m_shares != 0 && dayPrice < windowPrice) {
+        } else if (signal == -1) {
             m_cash += (m_shares * dayPrice);
             double sharesSold = m_shares;
             m_shares = 0;
@@ -73,24 +76,22 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
     }
     std::cout << "Buy and Hold End Cash: " << benchmarkShares * prices.back() << "\n";
 
-    if (ledger.empty()){
+    if (ledger.empty()) {
         std::cout << "No Trades Executed" << "\n";
-    }
-    else{
+    } else {
         int wins = 0;
         int losses = 0;
         int totalTrades = ledger.size() / 2;
-        for (int i = 0; i < ledger.size() - 1; i += 2){
-            if (ledger[i + 1].price > ledger[i].price){
+        for (int i = 0; i < ledger.size() - 1; i += 2) {
+            if (ledger[i + 1].price > ledger[i].price) {
                 wins++;
-            }
-            else {
+            } else {
                 losses++;
             }
         }
         std::cout << "Win rate: " << ((double)wins / totalTrades) * 100.0 << "\n"
-        << "Wins: " << wins << "\n"
-        << "Losses: " << losses << "\n"
-        << "Total Trades: " << totalTrades << "\n";
+                  << "Wins: " << wins << "\n"
+                  << "Losses: " << losses << "\n"
+                  << "Total Trades: " << totalTrades << "\n";
     }
 }

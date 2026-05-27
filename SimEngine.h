@@ -1,32 +1,33 @@
 #pragma once
 
-#include <vector>
+#include "TradingStrategy.h"
 #include <string>
+#include <vector>
 
-struct TradingRecord{
+struct TradingRecord {
 
     std::string type;
     double price;
     double shares;
 
-    TradingRecord(std::string givenType, double givenPrice, double givenShares){
+    TradingRecord(std::string givenType, double givenPrice, double givenShares) {
         type = givenType;
         price = givenPrice;
         shares = givenShares;
     }
 };
 
-class SimEngine{
-    private: 
-        double m_cash;
-        double m_shares;
-        double m_ledger;
-    
-    public:
-        SimEngine(double startingCash);
-        void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize);
-        double GetCash();
-        double GetShares();
+class SimEngine {
+  private:
+    double m_cash;
+    double m_shares;
+    TradingStrategy *m_strategy;
+
+  public:
+    SimEngine(double startingCash, TradingStrategy *strategy);
+    void RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize);
+    double GetCash();
+    double GetShares();
 };
 
 /**
@@ -38,7 +39,7 @@ class SimEngine{
  * @param windowSize The number of days a trend average is calculated for, used to align prices day and window_average
  * day
  * @note shares set to double supports fractional share ownership, int shares does not (which is not applied here)
- */
+ **/
 
 /**
  * @brief Calculates a window_size day average trend for each day
