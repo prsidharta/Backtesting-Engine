@@ -1,6 +1,26 @@
 #include "S_MovingAverage.h"
 
-int S_MovingAverage::CreateSignal(double dayPrice, double windowPrice, double currentShares) {
+S_MovingAverage::S_MovingAverage(int windowSize) {
+    m_windowSize = windowSize;
+}
+
+int S_MovingAverage::CreateSignal(double dayPrice, double currentShares) {
+
+    m_priceHistory.push_back(dayPrice);
+
+    if (m_priceHistory.size() < m_windowSize) {
+        return 0;
+    }
+
+    double sum = 0;
+    int startIndex = m_priceHistory.size() - m_windowSize;
+
+    for (size_t pastDay = startIndex; pastDay < m_priceHistory.size(); pastDay++) {
+        sum += m_priceHistory[pastDay];
+    }
+
+    double windowPrice = sum / m_windowSize;
+
     if (currentShares == 0 && dayPrice > windowPrice) {
         return 1; // buy
     } else if (currentShares != 0 && dayPrice < windowPrice) {

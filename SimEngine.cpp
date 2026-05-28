@@ -1,4 +1,5 @@
 #include "SimEngine.h"
+#include <chrono>
 #include <iostream>
 #include <stdexcept>
 
@@ -8,50 +9,23 @@ SimEngine::SimEngine(double startingCash, TradingStrategy *strategy) {
     m_strategy = strategy;
 }
 
-double SimEngine::GetCash() {
-    return m_cash;
+double SimEngine::GetPortfolioValue(double currentPrice) {
+    return m_cash + (m_shares * currentPrice);
 }
 
-double SimEngine::GetShares() {
-    return m_shares;
-}
+void SimEngine::RunSimulator(std::vector<double> &prices) {
 
-std::vector<double> CalculateWindowAverages(std::vector<double> &prices, int windowSize) {
+    std::cout << "START CASH: " << m_cash << "\n";
 
-    if (prices.size() == 0) {
-        throw std::invalid_argument("Empty Vector");
-    }
-
-    if (windowSize > prices.size()) {
-        throw std::invalid_argument("Requested Window Period is Greater than Vector Provided");
-    }
-
-    std::vector<double> windowAverages;
-
-    for (int i = 0; i < prices.size() - (windowSize - 1); i++) {
-        double temp = 0;
-        for (int j = 0; j < windowSize; j++) {
-            temp += prices[i + j];
-        }
-
-        temp = temp / windowSize;
-        windowAverages.push_back(temp);
-    }
-
-    return windowAverages;
-}
-
-void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &windowAverages, int windowSize) {
+    auto start = std::chrono::high_resolution_clock::now();
 
     double benchmarkShares = m_cash / prices[0];
     std::vector<TradingRecord> ledger;
 
-    for (size_t day = 0; day < windowAverages.size(); day++) {
-        int dayOffset = day + (windowSize - 1);
-        double dayPrice = prices[dayOffset];
-        double windowPrice = windowAverages[day];
+    for (size_t day = 0; day < prices.size(); day++) {
+        double dayPrice = prices[day];
 
-        int signal = m_strategy->CreateSignal(dayPrice, windowPrice, m_shares);
+        int signal = m_strategy->CreateSignal(dayPrice, m_shares);
 
         if (signal == 1) {
             m_shares = m_cash / dayPrice;
@@ -59,7 +33,6 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
             ledger.emplace_back("BUY", dayPrice, m_shares);
             std::cout << "BUY+" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
-                      << "Moving Average: " << windowPrice << "\n"
                       << "Shares bought: " << m_shares << "\n"
                       << "Current Cash: " << m_cash << "\n";
         } else if (signal == -1) {
@@ -69,7 +42,6 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
             ledger.emplace_back("SELL", dayPrice, sharesSold);
             std::cout << "SELL-" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
-                      << "Moving Average: " << windowPrice << "\n"
                       << "Shares Sold: " << sharesSold << "\n"
                       << "Current Cash: " << m_cash << "\n";
         }
@@ -94,4 +66,10 @@ void SimEngine::RunSimulator(std::vector<double> &prices, std::vector<double> &w
                   << "Losses: " << losses << "\n"
                   << "Total Trades: " << totalTrades << "\n";
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    std::cout << "END CASH: " << GetPortfolioValue(prices.back()) << "\n"
+              << "Program Time: " << duration.count() << "ms" << std::endl;
 }
