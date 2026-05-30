@@ -13,7 +13,7 @@ double SimEngine::GetPortfolioValue(double currentPrice) {
     return m_cash + (m_shares * currentPrice);
 }
 
-void SimEngine::RunSimulator(std::vector<double> &prices) {
+void SimEngine::RunSimulator(const std::vector<double> &prices) {
 
     std::cout << "START CASH: " << m_cash << "\n";
 
