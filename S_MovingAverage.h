@@ -5,7 +5,8 @@
 
 /**
  * @class S_MovingAverage
- * @brief The sliding window average trading strategy where you buy and sell based on the daily price compared to a window average
+ * @brief The sliding window average trading strategy where you buy and sell based on the daily price compared to a
+ * window average
  */
 class S_MovingAverage : public TradingStrategy {
   private:
@@ -13,7 +14,6 @@ class S_MovingAverage : public TradingStrategy {
     std::vector<double> m_priceHistory;
 
   public:
-
     /**
      * @brief Constructs a moving average strategy with a hisory of prices
      * @param windowSize The number of days to track for when calculating the moving average

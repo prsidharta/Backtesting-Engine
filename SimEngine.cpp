@@ -53,8 +53,8 @@ void SimEngine::RunSimulator(const std::vector<double> &prices) {
     } else {
         int wins = 0;
         int losses = 0;
-        int totalTrades = ledger.size() / 2;
-        for (int i = 0; i < ledger.size() - 1; i += 2) {
+        size_t totalTrades = ledger.size() / 2;
+        for (size_t i = 0; i < ledger.size() - 1; i += 2) {
             if (ledger[i + 1].price > ledger[i].price) {
                 wins++;
             } else {

@@ -13,7 +13,7 @@ int S_MovingAverage::CreateSignal(double dayPrice, double currentShares) {
     }
 
     double sum = 0;
-    int startIndex = m_priceHistory.size() - m_windowSize;
+    size_t startIndex = m_priceHistory.size() - m_windowSize;
 
     for (size_t pastDay = startIndex; pastDay < m_priceHistory.size(); pastDay++) {
         sum += m_priceHistory[pastDay];

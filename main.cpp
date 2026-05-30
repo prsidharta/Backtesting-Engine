@@ -7,18 +7,23 @@
 #include "S_MovingAverage.h"
 #include "SimEngine.h"
 #include "StockParser.h"
+#include <exception>
+#include <iostream>
 #include <vector>
 
 int main() {
-    double cash = 10000.00;
-    int windowSize = 3;
+    try {
+        double cash = 10000.00;
+        int windowSize = 3;
 
-    S_MovingAverage myStrategy(windowSize);
-    SimEngine myEngine(cash, &myStrategy);
+        S_MovingAverage myStrategy(windowSize);
+        SimEngine myEngine(cash, &myStrategy);
 
-    std::vector<double> prices = ReadCsv("SPY.csv");
+        std::vector<double> prices = ReadCsv("SPY.csv");
 
-    myEngine.RunSimulator(prices);
-
+        myEngine.RunSimulator(prices);
+    } catch (const std::exception &e) {
+        std::cerr << "\nFATAL CRASH TRAPPED: " << e.what() << "\n\n";
+    }
     return 0;
 }
