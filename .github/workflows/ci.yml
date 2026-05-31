@@ -1,0 +1,25 @@
+name: C++ Engine CI
+
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+
+jobs:
+  build-and-test:
+    name: Build and Run Container
+    runs-on: ubuntu-latest
+
+    
+    steps:
+      - name: Download Repository Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Container
+        run: docker build -t backtester .
+
+      - name: Execute Engine Test
+        run: docker run --rm backtester
