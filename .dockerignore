@@ -1,5 +1,8 @@
+.aws/
 build/
 .git/
+.vscode/
 *.exe
 *.obj
 *.o
+.env

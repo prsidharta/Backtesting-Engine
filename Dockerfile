@@ -8,4 +8,6 @@ COPY . .
 
 RUN mkdir build && cd build && cmake .. && make
 
+USER 1000
+
 CMD ["./build/BacktestingEngine"]

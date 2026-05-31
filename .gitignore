@@ -1,13 +1,10 @@
-
+.aws/
 .vscode/
-
 build/
 out/
 .cmake/
 CMakeCache.txt
 CMakeFiles/
-
-
 *.exe
 *.o
 *.obj
@@ -15,6 +12,5 @@ CMakeFiles/
 *.dll
 *.so
 *.dylib
-
-
 *.csv
+.env
