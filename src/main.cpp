@@ -19,7 +19,7 @@ int main() {
         S_MovingAverage myStrategy(windowSize);
         SimEngine myEngine(cash, &myStrategy);
 
-        std::vector<double> prices = ReadCsv("SPY.csv");
+        std::vector<double> prices = ReadCsv("data/SPY.csv");
 
         myEngine.RunSimulator(prices);
     } catch (const std::exception &e) {
