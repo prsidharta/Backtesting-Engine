@@ -31,19 +31,19 @@ void SimEngine::RunSimulator(const std::vector<double> &prices) {
             m_shares = m_cash / dayPrice;
             m_cash -= (m_shares * dayPrice);
             ledger.emplace_back("BUY", dayPrice, m_shares);
-            std::cout << "BUY+" << "\n"
+            /*std::cout << "BUY+" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
                       << "Shares bought: " << m_shares << "\n"
-                      << "Current Cash: " << m_cash << "\n";
+                      << "Current Cash: " << m_cash << "\n"; */
         } else if (signal == -1) {
             m_cash += (m_shares * dayPrice);
             double sharesSold = m_shares;
             m_shares = 0;
             ledger.emplace_back("SELL", dayPrice, sharesSold);
-            std::cout << "SELL-" << "\n"
+            /*std::cout << "SELL-" << "\n"
                       << "Stock Price: " << dayPrice << "\n"
                       << "Shares Sold: " << sharesSold << "\n"
-                      << "Current Cash: " << m_cash << "\n";
+                      << "Current Cash: " << m_cash << "\n";*/
         }
     }
     std::cout << "Buy and Hold End Cash: " << benchmarkShares * prices.back() << "\n";

@@ -1,4 +1,5 @@
 .aws/
+data/
 build/
 .git/
 .vscode/

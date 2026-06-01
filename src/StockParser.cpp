@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <cctype>
 
 std::vector<double> ReadCsv(std::string filename) {
 
@@ -14,8 +15,11 @@ std::vector<double> ReadCsv(std::string filename) {
         throw std::runtime_error("Failure to open file.");
     }
 
-    std::getline(csvFile, textChunk);
     while (std::getline(csvFile, line)) {
+
+        if (line.empty() || !std::isdigit(line[0])){
+            continue;
+        }
         int i = 0;
         std::stringstream lineStream(line);
 
