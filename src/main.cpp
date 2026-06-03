@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Patrick Sidharta
- * @brief Beginning stage of backtesting engine. Currently handles mock initialization, mock values, and run simulation
+ * @brief Intermediate stage of backtesting engine. Currently has one strategy (Moving Average) implemented. Need to add further strategies.
  */
 
 #include "S_MovingAverage.h"
