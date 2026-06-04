@@ -12,7 +12,7 @@
 #include <vector>
 
 int main() {
-    try {
+    //try {
         double cash = 10000.00;
         int windowSize = 3;
 
@@ -22,8 +22,8 @@ int main() {
         std::vector<double> prices = ReadCsv("data/SPY.csv");
 
         myEngine.RunSimulator(prices);
-    } catch (const std::exception &e) {
+    /*} catch (const std::exception &e) {
         std::cerr << "\nFATAL CRASH TRAPPED: " << e.what() << "\n\n";
-    }
+    }*/
     return 0;
 }
