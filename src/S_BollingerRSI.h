@@ -6,10 +6,14 @@ class S_BollingerRSI : public TradingStrategy {
   private:
     int bPeriod;
     double bMultiplier;
+    double bWindowSum;
+    double bWindowSumSquares;
 
     int rsiPeriod;
     int rsiUpper;
     int rsiLower;
+    double rsiGainsSum;
+    double rsiLossesSum;
 
     double prevDayPrice;
     std::queue<double> bWindowPrices;
