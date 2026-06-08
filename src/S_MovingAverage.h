@@ -15,7 +15,7 @@ class S_MovingAverage : public TradingStrategy {
 
   public:
     /**
-     * @brief Constructs a moving average strategy with a hisory of prices
+     * @brief Constructs a moving average strategy with a history of prices
      * @param windowSize The number of days to track for when calculating the moving average
      */
     S_MovingAverage(int windowSize);

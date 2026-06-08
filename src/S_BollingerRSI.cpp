@@ -100,17 +100,17 @@ int S_BollingerRSI::CreateSignal(double dayPrice, double currentShares) {
     double upperBand = mean + (bMultiplier * stdDev);
     double lowerBand = mean - (bMultiplier * stdDev);
 
-    if (dayPrice < lowerBand && rsi < rsiLower){
-        if (currentShares == 0){
+    if (dayPrice < lowerBand && rsi < rsiLower) {
+        if (currentShares == 0) {
             return 1;
         }
     }
 
-    if (dayPrice > upperBand && rsi > rsiUpper){
-        if (currentShares > 0){
+    if (dayPrice > upperBand && rsi > rsiUpper) {
+        if (currentShares > 0) {
             return -1;
         }
     }
-    
+
     return 0;
 }
