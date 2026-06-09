@@ -7,4 +7,5 @@ add_executable(BacktestingEngine
     src/SimEngine.cpp 
     src/StockParser.cpp 
     src/S_MovingAverage.cpp
+    src/S_BollingerRSI.cpp
 )
