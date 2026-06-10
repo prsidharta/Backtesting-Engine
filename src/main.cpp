@@ -1,7 +1,9 @@
 /**
  * @file main.cpp
  * @author Patrick Sidharta
- * @brief Intermediate stage of backtesting engine. Currently has one strategy (Moving Average) implemented. Need to add further strategies.
+ * @brief Intermediate stage of backtesting engine. 
+ * Currently has two strategies (Moving Average and RSI + Bollinger Bands) implemented.
+ * Need to create user interface and allow for seamless transition between strategies as well as user implemented variables.
  */
 
 #include "S_MovingAverage.h"
