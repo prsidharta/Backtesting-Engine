@@ -68,8 +68,8 @@ void SimEngine::RunSimulator(const std::vector<double> &prices) {
     }
 
     auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 
     std::cout << "END CASH: " << GetPortfolioValue(prices.back()) << "\n"
-              << "Program Time: " << duration.count() << "ms" << std::endl;
+              << "Program Time: " << duration.count() << "ns" << std::endl;
 }
