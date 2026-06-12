@@ -20,4 +20,4 @@ RUN mkdir build && cd build && cmake .. && make
 RUN chown -R 1000:1000 /app
 USER 1000
 
-CMD python3 -u scripts/getData.py && ./build/BacktestingEngine
+CMD ./build/BacktestingEngine

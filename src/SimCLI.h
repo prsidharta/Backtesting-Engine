@@ -5,6 +5,7 @@
 
 class SimCLI {
   private:
+    std::string selectStock;
     int selectStrat;
 
     void DisplayStocksMenu();
