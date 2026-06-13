@@ -11,12 +11,13 @@
 #include <iostream>
 
 int main() {
-    try {
+    //try {
         SimCLI app;
         app.Run();
-    } catch (const std::exception &err) {
+    /*} catch (const std::exception &err) {
         std::cerr << "Caught Error: " << err.what() << "\n";
         return 1;
     }
+    */
     return 0;
 }
