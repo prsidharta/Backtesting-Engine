@@ -27,7 +27,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 COPY . .
-
+RUN mkdir -p data
 RUN mkdir build && cd build && cmake .. && make
 
 RUN chown -R 1000:1000 /app

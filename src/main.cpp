@@ -7,17 +7,18 @@
  */
 
 #include "SimCLI.h"
+#include <aws/core/Aws.h>
 #include <exception>
 #include <iostream>
 
 int main() {
-    //try {
-        SimCLI app;
-        app.Run();
-    /*} catch (const std::exception &err) {
-        std::cerr << "Caught Error: " << err.what() << "\n";
-        return 1;
-    }
-    */
+
+    Aws::SDKOptions options;
+    Aws::InitAPI(options);
+    
+    SimCLI app;
+    app.Run();
+    
+    Aws::ShutdownAPI(options);
     return 0;
 }

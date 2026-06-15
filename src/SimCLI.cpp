@@ -3,6 +3,7 @@
 #include "S_MovingAverage.h"
 #include "SimEngine.h"
 #include "StockParser.h"
+#include "AWSConnection.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -56,13 +57,21 @@ void SimCLI::DisplayStrategyMenu() {
 void SimCLI::RunSim() {
     std::cout << "\nFetching historical data for " << selectStock << "...\n";
 
-    std::string command = "python3 scripts/getData.py " + selectStock;
-
+    //Old Python script data retrieval
+    /*std::string command = "python3 scripts/getData.py " + selectStock;
     int fetchResult = std::system(command.c_str());
-
     if (fetchResult != 0){
         std::cout << "[!] ERROR! Failed to fetch " << selectStock << " data. Terminating program.\n";
         return;
+    }
+    */
+
+    AWSConnection cloud_link;
+    bool success = cloud_link.FetchData(selectStock);
+    
+    if (!success) {
+        std::cout << "\nFailed: Failed to securely fetch S3 data. Exiting...\n";
+        return; 
     }
 
     std::string filepath = "data/" + selectStock + ".csv";
@@ -84,6 +93,6 @@ void SimCLI::RunSim() {
         break;
     }
     default:
-        std::cout << "[!] Invalid strategy selected. Terminating program.\n";
+        std::cout << "Invalid strategy selected. Exiting...\n";
     }
 }
