@@ -11,6 +11,7 @@
 class S_MovingAverage : public TradingStrategy {
   private:
     int m_windowSize;
+    double m_currentSum = 0.0;
     std::vector<double> m_priceHistory;
 
   public:
