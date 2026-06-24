@@ -49,7 +49,7 @@ This project started as a single file, running off of a mock data CSV with a har
 - *Algorithm Refactoring:* Initially, the engine was much slower due to the average calculation's nested loop. This was refactored into an O(N) sliding window later on.
 - *OOP:* Initially the program was inside a single file. This was changed incorporating OOP principles by distributing the program into multiple classes and files. This allowed for a much more pleasant experience when debugging, and it also allowed for easier implementation of new features.
 - *Cloud Integration:* Originally, the program only worked with hardcoded local files. To make the system portable and scalable, I built a Python script to stage the data into an AWS S3 bucket. The program was also containerized in Docker for easier deployment.
-- *Cloud Optimization:* The AWS C++ SDK was initially as a stepping stone into the AWS ecosystem. This was then replaced with libcurl to eliminate the need for AWS keys, which simplified the project and reduced the Docker build time.
+- *Cloud Optimization:* The AWS C++ SDK was initially used as a stepping stone into the AWS ecosystem. This was then replaced with libcurl to eliminate the need for AWS keys, which simplified the project and reduced the Docker build time.
 
 ## Future Work
 
