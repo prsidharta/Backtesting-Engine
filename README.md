@@ -91,7 +91,7 @@ I benchmarked the engine on my local machine using 5 years of daily OHLCV data f
 | **Previous Iteration O(N²)** | 177,066 ns | 7.08 million rows/sec |
 | **Optimized Loop O(N)** | 134,943 ns | 9.30 million rows/sec |
 
-**Result:** The algorithmic optimization made the core simulation **1.31x faster**, allowing it to process over 9 million rows per second. Also ensures linear growth in performance as the data set grows instead of quadratic from using the previous method.
+**Result:** The algorithmic optimization made the core simulation **1.31x faster**, allowing it to process over 9 million rows per second. This change also ensures linear growth in performance as the data set grows instead of quadratic from using the previous method.
 
 ## Getting Started
 
