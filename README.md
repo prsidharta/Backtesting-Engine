@@ -57,7 +57,7 @@ This project started as a single file, running off of a mock data CSV with a har
 - **Multi-Asset Portfolio:** Expand the engine to simulate strategies across multiple assets and an entire portfolio to simulate actual personal situations.
 
 ## Project Structure
-
+```text
 .
 ├── .github/workflows/
 │   └── ci.yml
@@ -65,7 +65,7 @@ This project started as a single file, running off of a mock data CSV with a har
 ├── scripts/
 │   └── getData.py
 ├── src/
-│   ├── AWSConnection.cpp/.h <- S3 Data Retrieval (via libcurl)
+│   ├── AWSConnection.cpp/.h
 │   ├── main.cpp
 │   ├── S_BollingerRSI.cpp/.h
 │   ├── S_MovingAverage.cpp/.h
@@ -80,7 +80,7 @@ This project started as a single file, running off of a mock data CSV with a har
 ├── Dockerfile
 ├── README.md
 └── requirements.txt
-
+```
 ## Performance & Algorithmic Efficiency
 
 
