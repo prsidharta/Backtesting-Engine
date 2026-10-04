@@ -24,7 +24,7 @@ std::vector<double> ReadCsv(std::string filename) {
         std::stringstream lineStream(line);
 
         while (std::getline(lineStream, textChunk, ',')) {
-            if (i == 4) {
+            if (i == 1) {
                 stockPrices.push_back(std::stod(textChunk));
                 break;
             }

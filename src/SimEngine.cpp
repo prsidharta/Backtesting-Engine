@@ -11,7 +11,8 @@
 #include <sys/resource.h>
 #endif
 
-SimEngine::SimEngine(double startingCash, TradingStrategy *strategy) {
+SimEngine::SimEngine(double startingCash, TradingStrategy *strategy, double costRate) {
+    m_costRate = costRate;
     m_startingCash = startingCash;
     m_cash = startingCash;
     m_shares = 0.0;
@@ -30,6 +31,7 @@ SimulationStats SimEngine::Simulate(const std::vector<double> &prices) {
     // Reset variables to beginning -> allows for multiple program executions
     m_cash = m_startingCash;
     m_shares = 0.0;
+    m_strategy->Reset();
 
     SimulationStats stats;
     std::vector<double> portfolioValues;
@@ -53,16 +55,7 @@ SimulationStats SimEngine::Simulate(const std::vector<double> &prices) {
 
         int signal = m_strategy->CreateSignal(dayPrice, m_shares);
 
-        if (signal == 1 && m_shares == 0.0) {
-            m_shares = m_cash / dayPrice;
-            m_cash = 0.0;
-            stats.ledger.emplace_back("BUY", dayPrice, m_shares);
-        } else if (signal == -1 && m_shares > 0.0) {
-            m_cash += m_shares * dayPrice;
-            double sharesSold = m_shares;
-            m_shares = 0.0;
-            stats.ledger.emplace_back("SELL", dayPrice, sharesSold);
-        }
+        ApplySignal(m_cash, m_shares, signal, dayPrice, m_costRate, &stats.ledger); 
 
         portfolioValues.push_back(GetPortfolioValue(dayPrice));
     }

@@ -17,4 +17,6 @@ class TradingStrategy {
      * @return int -1 Commands the engine to sell shares
      */
     virtual int CreateSignal(double dayPrice, double currentShares) = 0;
+
+    virtual void Reset() = 0;
 };

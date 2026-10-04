@@ -34,3 +34,8 @@ int S_MovingAverage::CreateSignal(double dayPrice, double currentShares) {
 
     return 0; // hold
 }
+
+void S_MovingAverage::Reset() {
+    m_priceHistory.clear();
+    m_currentSum = 0.0;
+}

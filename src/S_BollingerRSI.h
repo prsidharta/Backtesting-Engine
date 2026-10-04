@@ -71,4 +71,6 @@ class S_BollingerRSI : public TradingStrategy {
      * @return 1 (BUY), 0 (HOLD), -1 (SELL)
      */
     int CreateSignal(double dayPrice, double currentShares) override;
+
+    void Reset() override;
 };

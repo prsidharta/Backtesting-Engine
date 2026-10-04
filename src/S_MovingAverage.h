@@ -28,4 +28,5 @@ class S_MovingAverage : public TradingStrategy {
      * @return 1 indicating to buy || 0 indicating to hold|| -1 indicating to sell
      */
     int CreateSignal(double dayPrice, double currentShares) override;
+    void Reset() override;
 };

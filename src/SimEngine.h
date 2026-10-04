@@ -1,32 +1,9 @@
 #pragma once
 
+#include "Execution.h"
 #include "TradingStrategy.h"
 #include <string>
 #include <vector>
-
-/**
- * @struct TradingRecord
- * @brief Data container that holds all necessary information for one singular trade, used in vector of structs to
- * compile whole trading record of simulation
- */
-struct TradingRecord {
-
-    std::string type; ///< The transaction classification ("BUY", "HOLD", "SELL")
-    double price;     ///< The price per share at time of trade
-    double shares;    ///< The amount of shares bought or sold at the time of the trade
-
-    /**
-     * @brief Constructs a new TradingRecord instance
-     * @param givenType The buy, hold, or sell signal
-     * @param givenPrice The price of the shares at the time of the trade
-     * @param givenShares The amount of shares bought or sold at the time of the trade
-     */
-    TradingRecord(const std::string givenType, double givenPrice, double givenShares) {
-        type = givenType;
-        price = givenPrice;
-        shares = givenShares;
-    }
-};
 
 struct SimulationStats {
 
@@ -62,6 +39,7 @@ struct SimulationStats {
  */
 class SimEngine {
   private:
+    double m_costRate;
     double m_startingCash;       ///< Initial balance the engine was constructed with; used to reset state between runs
     double m_cash;                ///< The current amount of cash ($USD) held by the portfolio
     double m_shares;              ///< Present held volume of equity
@@ -99,7 +77,7 @@ class SimEngine {
      * @param startingCash The initial balance in USD
      * @param strategy A pointer to the trading strategy to be utilized
      */
-    SimEngine(double startingCash, TradingStrategy *strategy);
+    SimEngine(double startingCash, TradingStrategy *strategy, double costRate = 0.0);
 
     /**
      * @brief Executes the trading strategy across the given price series and returns a structured result

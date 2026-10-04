@@ -48,6 +48,17 @@ S_BollingerRSI::S_BollingerRSI(int bPeriod, double bMultiplier, int rsiPeriod, i
     this->rsiPeriod = rsiPeriod;
     this->rsiUpper = rsiUpper;
     this->rsiLower = rsiLower;
+    Reset();
+}
+
+void S_BollingerRSI::Reset() {
+    bWindowPrices = std::queue<double>();
+    rsiGains = std::queue<double>();
+    rsiLosses = std::queue<double>();
+    bWindowSum = 0.0;
+    bWindowSumSquares = 0.0;
+    rsiGainsSum = 0.0;
+    rsiLossesSum = 0.0;
     prevDayPrice = -1.0;
 }
 
