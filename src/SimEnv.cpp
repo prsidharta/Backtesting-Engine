@@ -25,7 +25,6 @@ std::vector<double> SimEnv::Reset(size_t start, size_t end) {
     m_end = end;
     m_t = start;
 
-    // Replay the warm-up bars so indicators are valid on the very first decision
     m_features.Reset();
     for (size_t i = start - FeatureBuilder::kWarmup; i <= start; i++) {
         m_features.Update(m_prices[i]);
