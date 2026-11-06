@@ -1,9 +1,0 @@
-yfinance
-pandas
-
-numpy
-gymnasium
-stable-baselines3
-torch
-pybind11
-cmake

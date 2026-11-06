@@ -1,0 +1,14 @@
+{
+  "data_path": "data/SPY.csv",
+  "output_dir": "models/ppo",
+  "seed": 0,
+  "total_timesteps": 300000,
+  "checkpoint_every": 10000,
+  "episode_len": 200,
+  "starting_cash": 10000,
+  "cost_rate": 0.0005,
+  "n_envs": 4,
+  "train_fraction": 0.7,
+  "validation_fraction": 0.15,
+  "ppo": {"n_steps": 512, "batch_size": 256, "gamma": 0.99, "ent_coef": 0.01}
+}

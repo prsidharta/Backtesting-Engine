@@ -4,7 +4,7 @@ project(BacktestingEngine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(CURL REQUIRED)
+
 
 
 add_library(engine_core STATIC
@@ -15,16 +15,19 @@ add_library(engine_core STATIC
     src/S_BollingerRSI.cpp
     src/FeatureBuilder.cpp
     src/SimEnv.cpp
-    src/S_PPO.cpp
 )
 target_include_directories(engine_core PUBLIC src)
 
+option(BUILD_CLI "Build classic strategy CLI" ON)
+if(BUILD_CLI)
+find_package(CURL REQUIRED)
 add_executable(BacktestingEngine
     src/main.cpp
     src/SimCLI.cpp
     src/AWSConnection.cpp
 )
 target_link_libraries(BacktestingEngine PRIVATE engine_core CURL::libcurl)
+endif()
 
 
 option(BUILD_PYTHON_MODULE "Build the pybind11 backtest_env module" OFF)

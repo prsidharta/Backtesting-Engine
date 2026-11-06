@@ -1,6 +1,5 @@
 #include "SimCLI.h"
 
-#include "S_PPO.h"
 #include "S_BollingerRSI.h"
 #include "S_MovingAverage.h"
 #include "SimEngine.h"
@@ -53,7 +52,6 @@ void SimCLI::DisplayStrategyMenu() {
     std::cout << "\nSelect Simulation Strategy:\n"
               << "[1] Simple Moving Average\n"
               << "[2] Bollinger Bands + RSI\n"
-              << "[3] PPO Model\n"
               << "> ";
 
     std::cin >> selectStrat;
@@ -97,16 +95,6 @@ void SimCLI::RunSim() {
         S_BollingerRSI strategy(20, 2.0, 14, 70, 30);
         SimEngine engine(startCash, &strategy, costRate);
         engine.RunSimulator(prices);
-        break;
-    }
-    case 3: {
-        try {
-            S_PPO strategy("models/PPO.txt");
-            SimEngine engine(startCash, &strategy, costRate);
-            engine.RunSimulator(prices);
-        } catch (const std::exception &e) {
-                std::cout << "Could not load PPO model: " << e.what() << "\n";
-            }
         break;
     }
     default:

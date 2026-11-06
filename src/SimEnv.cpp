@@ -5,11 +5,14 @@
 
 SimEnv::SimEnv(std::vector<double> prices, double startingCash, double costRate)
     : m_prices(std::move(prices)), m_startingCash(startingCash), m_costRate(costRate) {
+    if (!std::isfinite(startingCash) || startingCash <= 0 || !std::isfinite(costRate) || costRate < 0 || costRate >= 1) {
+        throw std::invalid_argument("invalid cash or cost rate");
+    }
     if (m_prices.size() < FeatureBuilder::kWarmup + 3) {
         throw std::invalid_argument("SimEnv: not enough prices");
     }
     for (double p : m_prices) {
-        if (p <= 0.0) {
+        if (!std::isfinite(p) || p <= 0.0) {
             throw std::invalid_argument("SimEnv: prices must all be positive");
         }
     }
@@ -39,6 +42,7 @@ std::vector<double> SimEnv::Observe() const {
 }
 
 StepResult SimEnv::Step(int action) {
+    if (action != 0 && action != 1) throw std::invalid_argument("invalid action");
     if (m_t + 1 >= m_end) {
         throw std::logic_error("SimEnv::Step: episode is over, call Reset()");
     }

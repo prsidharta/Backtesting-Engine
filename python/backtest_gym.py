@@ -1,4 +1,5 @@
 """Gymnasium wrapper around the C++ SimEnv (build/backtest_env*.so must be importable)."""
+
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
@@ -11,29 +12,48 @@ class BacktestEnv(gym.Env):
 
     metadata = {"render_modes": []}
 
-    def __init__(self, prices, episode_len=252, cost_rate=0.0005, starting_cash=10_000.0):
+    def __init__(
+        self, prices, episode_len=252, cost_rate=0.0005, starting_cash=10_000.0
+    ):
         super().__init__()
         self.prices = list(prices)
         self.warmup = backtest_env.SimEnv.warmup()
-        if len(self.prices) < self.warmup + episode_len + 1:
+        if len(self.prices) < self.warmup + episode_len:
             raise ValueError("price series too short for this episode_len")
+        if episode_len < 2:
+            raise ValueError("episode_len must be at least two")
         self.episode_len = episode_len
         self.sim = backtest_env.SimEnv(self.prices, starting_cash, cost_rate)
         self.action_space = spaces.Discrete(2)
         self.observation_space = spaces.Box(
-            low=-5.0, high=5.0, shape=(backtest_env.SimEnv.num_features(),), dtype=np.float32
+            low=-5.0,
+            high=5.0,
+            shape=(backtest_env.SimEnv.num_features(),),
+            dtype=np.float32,
         )
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         hi = len(self.prices) - self.episode_len
-        start = int(self.np_random.integers(self.warmup, hi + 1))
+        start = int(
+            (options or {}).get("start", self.np_random.integers(self.warmup, hi + 1))
+        )
+        if start < self.warmup or start > hi:
+            raise ValueError("invalid episode start")
         obs = self.sim.reset(start, start + self.episode_len)
         return np.asarray(obs, dtype=np.float32), {}
 
     def step(self, action):
+        if not self.action_space.contains(action):
+            raise ValueError("invalid action")
         obs, reward, done, value = self.sim.step(int(action))
-        return np.asarray(obs, dtype=np.float32), float(reward), False, bool(done), {"value": value}
+        return (
+            np.asarray(obs, dtype=np.float32),
+            float(reward),
+            False,
+            bool(done),
+            {"value": value},
+        )
 
 
 def evaluate(policy_fn, prices, cost_rate=0.0005, starting_cash=10_000.0):
